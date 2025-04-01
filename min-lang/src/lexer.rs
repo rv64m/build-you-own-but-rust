@@ -112,7 +112,6 @@ impl Lexer {
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
         let res = match self.ch {
-            '\0' => Token::new(TokenType::Eof, "\0".to_string()),
             '=' => {
                 let next_ch = self.peek_char();
                 if next_ch == '=' {
@@ -144,6 +143,7 @@ impl Lexer {
             '}' => Token::new(TokenType::RBrace, self.ch.to_string()),
             ',' => Token::new(TokenType::Comma, self.ch.to_string()),
             ';' => Token::new(TokenType::Semicolon, self.ch.to_string()),
+            '\0' | '0' => Token::new(TokenType::Eof, "".to_string()),
             _ => {
                 if is_letter(self.ch) {
                     let literal = self.read_identifier();
